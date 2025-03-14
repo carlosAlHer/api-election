@@ -22,10 +22,12 @@ exports.auth = (req, res, next) => {
         let payload = jwt.decode(token, process.env.JWT_SECRET);
 
         //Comprobar la expiración del token
-        if (payload.exp <= moment().unix()) { return res.status(401).send({ message: "Token expired",}) }
+        if (payload.exp <= moment().unix()) { return res.status(401).send({ message: "Token expired", }) }
 
         //Agregar datos de usuario a request
         req.vote = payload;
+        //Pasar a ejecucion de la accion
+        next();
 
     } catch (error) {
         return res.status(404).send({
@@ -36,7 +38,6 @@ exports.auth = (req, res, next) => {
     //#endregion  DECODIFICAR TOKEN
 
 
-    //Pasar a ejecucion de la accion
-    next();
+
 }
 
