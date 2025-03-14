@@ -15,7 +15,9 @@ app.use(cors({
 
 const voterRoutes = require('./routes/voter.js');
 const candidateRoutes = require('./routes/candidate.js');
+const voteRoutes = require('./routes/vote.js')
 
 app.use('/election/voter', voterRoutes);
 app.use('/election/candidate', candidateRoutes);
+app.use('/election/vote', voteRoutes);
 app.listen(port, () => console.log(`app listening on port ${port}!`));

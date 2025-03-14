@@ -3,8 +3,27 @@ const { Candidate } = require('../models');
 
 const getAll = async (req, res) => {
     try {
-        const candidates = await Candidate.findAll();
-        res.status(200).json(candidates);
+
+        let { page, limit } = req.query;//se recibe la información de la paginacion por params
+        page = parseInt(page) || 1;
+        limit = parseInt(limit) || 3;
+        if( page < 1 || limit < 1)  return res.status(400).json({ error: "Page and limit must be positive numbers" });
+        const offset = (page - 1) * limit;
+
+        const { rows: candidates, count: total } = await Candidate.findAndCountAll({
+            limit,
+            offset
+        });
+
+        const totalPages = Math.ceil(total / limit);
+     
+        res.status(200).json({
+            totalCandidates: total,
+            totalPages,
+            currentPage: page,
+            pageSize: limit,
+            candidates
+        });
     } catch (error) {
         res.status(500).json({ error: error.message, message:"Error when consulting candidate"});
     }
