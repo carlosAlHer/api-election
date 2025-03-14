@@ -6,7 +6,7 @@ Este proyecto es una **API RESTful** para un sistema de votación donde:
 
   Tecnologías Utilizadas
 - Backend Node.js, Express.js
-- **Base de Datos: MySQL con Sequelize ORM
+- Base de Datos: MySQL con Sequelize ORM
 - Autenticación: JWT (jsonwebtoken)
 - Gestión de Variables de Entorno: dotenv
 
@@ -14,28 +14,26 @@ Este proyecto es una **API RESTful** para un sistema de votación donde:
 - [Node.js](https://nodejs.org/) (v16 o superior)
 - [MySQL](https://www.mysql.com/)
 - [Git](https://git-scm.com/)
-- Un cliente de API como [Postman](https://www.postman.com/) o `cURL`
+- Un cliente de API como Postman) o Insomnia
 
   confi db: npx sequelize-cli db:migrate
   Inicio serve: npm start
 
 End points:
-const candidateRoutes = require('./routes/candidate.js');
-router.get('/', candidateController.getAll);
-router.get('/:id', candidateController.getById);
-router.post('/', candidateController.createCandidate);
-router.delete('/:id', candidateController.deleteCandidate);
+/election/voter -> POST, crea voter, body json con name, email.
+/election/voter -> GET, obtiene lista de voters.
+/election/voter/id_voter -> GET, obtiene datos de voter.
+/election/voter/id_voter -> DELETE 
 
-const voterRoutes = require('./routes/voter.js');
-router.get('/', voterController.getAll);
-router.get('/:id', voterController.getById);
-router.post('/', voterController.createVoter);
-router.delete('/:id', voterController.deleteVoter);
+/election/candidate -> POST, crea candidate, body json con name, party(optional).
+/election/candidate -> GET, obtiene lista de candidate.
+/election/candidate/id_candidate -> GET, obtiene datos de candidate.
+/election/candidate/id_candidate -> DELETE 
 
-const voteRoutes = require('./routes/vote.js')
-router.post('/',checkAuth.auth, routerVote.createVote);
-router.post('/auth', routerVote.generateTkVoter);
-router.get('/statistics', routerVote.getStatistics);
+/election/vote/auth -> POST, crea token necesario para realizar votación, body json con id_voter.
+/election/vote -> POST, crea vote, body json con id_voter, id_candidate. en la cabecera en Authorization se ingresa el token generado en el end point auth.
+/election/vote/statistics -> GET, obtiene datos stadisticos.
+
 
 
 Autor: carlos alvarez hernandez.
