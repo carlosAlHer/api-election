@@ -30,7 +30,21 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Candidate',
     tableName: 'candidate',
-    timestamps: false
+    timestamps: false,
+    hooks: {
+
+      async beforeCreate(candidate, options) {
+        try {
+          // Verifica si el name ya existe en la tabla Voter
+          const existVoter = await sequelize.models.Voter.findOne({ where: { name: candidate.name } });
+          if (existVoter) throw new Error('This candidate is already registered as a voter.');
+
+        } catch (error) {
+          throw new Error(`Validation error: ${error.message}`);
+        }
+
+      }
+    }
   });
   return Candidate;
 };
